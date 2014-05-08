@@ -1,0 +1,89 @@
+require! crypto
+require! request
+Q = require 'q'
+uuid = require 'node-uuid'
+config = require './config'
+
+hashToken = (method, gs) ->
+  randomizer = crypto.randomBytes(3).toString 'hex'
+  tokenSource = "#{method}:#{gs.token}:#{gs.secretKey}:#{randomizer}"
+  hash = crypto.createHash('sha1').update(tokenSource).digest('hex')
+  randomizer + hash
+
+initSession = (gs) ->
+  deferred = Q.defer()
+  request.post do
+    url: 'http://grooveshark.com/more.php?initiateSession'
+    json:
+      header:
+        client: gs.client
+        clientRevision: gs.clientRevision
+        uuid: gs.uuid = uuid.v4()
+      parameters: null
+      method: 'initiateSession'
+    (err, res, data) ->
+      if err
+        deferred.reject new Error err
+      else
+        gs.session = data.result
+        deferred.resolve gs
+  deferred.promise
+
+getToken = (gs) ->
+  deferred = Q.defer()
+  request.post do
+    url: 'https://grooveshark.com/more.php?getCommunicationToken'
+    json:
+      header:
+        client: gs.client
+        clientRevision: gs.clientRevision
+        uuid: gs.uuid
+        session: gs.session
+      parameters:
+        secretKey: gs.sessionMD5 = crypto.createHash('md5').update(gs.session).digest('hex')
+      method: 'getCommunicationToken'
+    (err, res, data) ->
+      if err
+        deferred.reject new Error err
+      else
+        gs.token = data.result
+        deferred.resolve gs
+  deferred.promise
+
+getStreamKey = (gs) ->
+  deferred = Q.defer()
+  request.post do
+    url: 'http://grooveshark.com/more.php?getStreamKeyFromSongIDEx'
+    json:
+      header:
+        token: hashToken 'getStreamKeyFromSongIDEx', gs
+        client: gs.client
+        clientRevision: gs.clientRevision
+        uuid: gs.uuid
+        session: gs.session
+      parameters:
+        prefetch: no
+        type: 0
+        mobile: no
+        songID: gs.songID
+        country: gs.country
+      method: 'getStreamKeyFromSongIDEx'
+    (err, res, data) ->
+      if err
+        deferred.reject new Error err
+      else
+        gs.streamKey = data.result
+        deferred.resolve gs
+  deferred.promise
+
+gs = Object.create config
+gs.songID = 35988886
+
+initSession gs
+.then getToken
+.then getStreamKey
+.then (gs) ->
+  console.log gs
+  host = gs.streamKey.ip
+  streamKey = gs.streamKey.streamKey
+  console.log "http://#{host}/stream.php?streamKey=#{streamKey}"
