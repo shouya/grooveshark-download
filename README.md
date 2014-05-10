@@ -31,9 +31,9 @@ Example:
 
     $ aria2c -i /tmp/aria2.down
 
-### 4. Edit ID3 tags if needed.
+### 4. Edit ID3 tag if needed.
 
-    $ easytags <music_file.mp3>
+    $ easytag <music_file.mp3>
 
 ## Development
 
