@@ -1,17 +1,18 @@
-grooveshark-download
-====================
+# grooveshark-download
+
 
 Download songs in a playlist from grooveshark in mp3 format.
 
-Usage
-===================
-1. Extract the playlist ID from URL.
+## Usage
+### 1. Extract the playlist ID from URL.
+
 
 Example:
 
     http://grooveshark.com/#!/playlist/Anime/95866414  ==>  95866414
 
-2. Generate aria2 importing file with the program `download_playlist.rb`.
+### 2. Generate aria2 importing file with the program `download_playlist.rb`.
+
 
 Synopsis: `$ ruby download_playlist.rb <playlist_id>`
 
@@ -21,7 +22,8 @@ Example:
 
     $ ruby download_playlist.rb 95866414 | tee /tmp/aria2.down
 
-3. Download with aria2.
+### 3. Download with aria2.
+
 
     $ aria2c -i <aria2_importing_file>
 
@@ -29,20 +31,18 @@ Example:
 
     $ aria2c -i /tmp/aria2.down
 
-4. Edit ID3 tags if needed.
+### 4. Edit ID3 tags if needed.
 
     $ easytags <music_file.mp3>
 
-Development
-======================
+## Development
 
-Any further improvement suggestion or bug reporting can be opened in [Issues](https://github.com/shouya/grooveshark-download/issues).
+Any further improvement suggestions or bug reportings can be opened as [Issues](https://github.com/shouya/grooveshark-download/issues).
 
-Pull requests are welcomed.
+Pull requests are always welcomed.
 
 
-License
-======================
+## License
 The MIT License (MIT)
 
 Copyright (c) 2014 Shou Ya
