@@ -10,8 +10,8 @@ Ruby: version 1.9+.
 
 Ruby Gems:
 
-    - rest-client
-    * awesome_print
+- rest-client
+- awesome_print
 
 `$ gem install rest-client awesome_print`
 
