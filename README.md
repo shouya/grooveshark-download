@@ -3,6 +3,20 @@
 
 Download songs in a playlist from grooveshark in mp3 format.
 
+
+## Requirements
+
+Ruby: version 1.9+.
+
+Ruby Gems:
+
+    - rest-client
+    * awesome_print
+
+`$ gem install rest-client awesome_print`
+
+
+
 ## Usage
 ### 1. Extract the playlist ID from URL.
 
@@ -37,10 +51,13 @@ Example:
 
 ## Development
 
-Any further improvement suggestions or bug reportings can be opened as [Issues](https://github.com/shouya/grooveshark-download/issues).
+Please open an [issue](https://github.com/shouya/grooveshark-download/issues)
+if you have any further improvement suggestions or if you want to report a bug.
 
 Pull requests are always welcomed.
 
+## Resources
+* [NetTech Wiki: Grooveshark Internal API](http://nettech.wikia.com/wiki/Grooveshark_Internal_API)
 
 ## License
 The MIT License (MIT)
